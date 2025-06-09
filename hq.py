@@ -1,6 +1,7 @@
 from concurrent.futures import ThreadPoolExecutor
 from typing import Dict, List
 from pyspark.sql import SparkSession, DataFrame
+from pyspark.sql.types import StructType
 import logging
 import traceback
 from pyspark.sql.functions import current_timestamp, lit
@@ -113,7 +114,9 @@ class DataSync:
         except Exception as e:
             logging.error(f"Error extracting table {table_name}: {e}")
             logging.error(traceback.format_exc())
-            return self.spark.createDataFrame([], schema=None)
+            return self.spark.createDataFrame(
+                self.spark.sparkContext.emptyRDD(), StructType([])
+            )
 
     def write_to_adls(self, df: DataFrame, table_name: str) -> None:
         try:
