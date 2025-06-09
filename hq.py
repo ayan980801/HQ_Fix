@@ -2,6 +2,7 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import Dict, List
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.types import StructType
+from pyspark.dbutils import DBUtils
 import logging
 import traceback
 from pyspark.sql.functions import current_timestamp, lit
@@ -212,14 +213,16 @@ def main() -> None:
         )
         logging.info("Spark session initialized.")
 
+        dbutils = DBUtils(spark)
+
         server_details = {
             "host": "10.255.2.5",
             "port": "1433",
             "database": "HQ_QLT",
-            "username": dbutils.secrets.get(  # noqa: F821
+            "username": dbutils.secrets.get(
                 scope="key-vault-secret", key="DataProduct-SB-HQ-User"
             ),
-            "password": dbutils.secrets.get(  # noqa: F821
+            "password": dbutils.secrets.get(
                 scope="key-vault-secret", key="DataProduct-SB-HQ-Pass"
             ),
         }
@@ -231,10 +234,10 @@ def main() -> None:
 
         snowflake_config = {
             "sfURL": "hmkovlx-nu26765.snowflakecomputing.com",
-            "sfUser": dbutils.secrets.get(  # noqa: F821
+            "sfUser": dbutils.secrets.get(
                 scope="key-vault-secret", key="DataProduct-SF-EDW-User"
             ),
-            "sfPassword": dbutils.secrets.get(  # noqa: F821
+            "sfPassword": dbutils.secrets.get(
                 scope="key-vault-secret", key="DataProduct-SF-EDW-Pass"
             ),
             "sfDatabase": "DEV",
