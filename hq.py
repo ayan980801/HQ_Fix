@@ -216,10 +216,10 @@ def main() -> None:
             "host": "10.255.2.5",
             "port": "1433",
             "database": "HQ_QLT",
-            "username": dbutils.secrets.get(
+            "username": dbutils.secrets.get(  # noqa: F821
                 scope="key-vault-secret", key="DataProduct-SB-HQ-User"
             ),
-            "password": dbutils.secrets.get(
+            "password": dbutils.secrets.get(  # noqa: F821
                 scope="key-vault-secret", key="DataProduct-SB-HQ-Pass"
             ),
         }
@@ -230,11 +230,11 @@ def main() -> None:
         }
 
         snowflake_config = {
-            "sfURL": "https://hmkovlx-nu26765.snowflakecomputing.com",
-            "sfUser": dbutils.secrets.get(
+            "sfURL": "hmkovlx-nu26765.snowflakecomputing.com",
+            "sfUser": dbutils.secrets.get(  # noqa: F821
                 scope="key-vault-secret", key="DataProduct-SF-EDW-User"
             ),
-            "sfPassword": dbutils.secrets.get(
+            "sfPassword": dbutils.secrets.get(  # noqa: F821
                 scope="key-vault-secret", key="DataProduct-SF-EDW-Pass"
             ),
             "sfDatabase": "DEV",
